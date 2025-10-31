@@ -1,1 +1,185 @@
-<h1>China.CY</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>China.CY Dev</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            height: 100vh;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            perspective: 1000px;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 10px #00ff88;
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+
+        .neon-text {
+            color: #fff;
+            text-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #0ff;
+        }
+
+        .letter {
+            display: inline-block;
+            transform: rotateY(0deg);
+            transition: transform 0.3s;
+        }
+
+        .letter:hover {
+            transform: rotateY(180deg);
+        }
+
+        .links {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1;
+        }
+
+        .link {
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: color 0.3s;
+            text-shadow: 0 0 5px #00ff88;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        .link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #00ff88;
+            font-size: 0.9em;
+            text-shadow: 0 0 5px #00ff88;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #0ff;
+            }
+            to {
+                text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88, 0 0 60px #0ff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bgVideo">
+        <source src="4.mov" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="container" id="textContainer">
+        <h1 class="neon-text" id="text">
+            <span class="letter">C</span>
+            <span class="letter">H</span>
+            <span class="letter">I</span>
+            <span class="letter">N</span>
+            <span class="letter">A</span>
+            <span class="letter">.</span>
+            <span class="letter">C</span>
+            <span class="letter">Y</span>
+        </h1>
+    </div>
+
+    <div class="links">
+        <a href="https://china.cy/" class="link" target="_blank">Home</a>
+        <a href="https://blog.china.cy/" class="link" target="_blank">Blog</a>
+        <a href="https://photo.china.cy/" class="link" target="_blank">Photo</a>
+        <a href="https://note.china.cy/" class="link" target="_blank">Note</a>
+    </div>
+
+    <footer>
+        <p>&copy; China.CY. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const textContainer = document.getElementById('textContainer');
+        const text = document.getElementById('text');
+
+        let isDragging = false;
+        let previousMousePosition = {
+            x: 0,
+            y: 0
+        };
+        let currentRotation = {
+            x: 0,
+            y: 0
+        };
+
+        textContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.clientX,
+                y: e.clientY
+            };
+            text.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const deltaMove = {
+                x: e.clientX - previousMousePosition.x,
+                y: e.clientY - previousMousePosition.y
+            };
+
+            currentRotation.y += deltaMove.x * 0.5;
+            currentRotation.x -= deltaMove.y * 0.5;
+
+            text.style.transform = `translate(-50%, -50%) rotateX(${currentRotation.x}deg) rotateY(${currentRotation.y}deg)`;
+
+            previousMousePosition = {
+                x: e.clientX,
+                y: e.clientY
+            };
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            text.style.cursor = 'grab';
+        });
+    </script>
+</body>
+</html>
